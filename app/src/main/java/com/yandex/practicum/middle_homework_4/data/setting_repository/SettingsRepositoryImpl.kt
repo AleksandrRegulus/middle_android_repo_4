@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -36,7 +37,8 @@ class SettingsRepositoryImpl(
                 preferences[REFRESH_PERIOD_KEY] = periodic
                 preferences[FIRST_LAUNCH_DELAY_KEY] = delayed
             }
-            _state.value = SettingContainer(periodic = periodic, delayed = delayed)
+            val stateValue = SettingContainer(periodic = periodic, delayed = delayed)
+            _state.update { stateValue }
         }
     }
 
@@ -46,7 +48,8 @@ class SettingsRepositoryImpl(
                 .collect { pref: Preferences ->
                     val periodic: Long = pref[REFRESH_PERIOD_KEY] ?: SettingContainer.DEFAULT_REFRESH_PERIOD
                     val delayed: Long = pref[FIRST_LAUNCH_DELAY_KEY] ?: SettingContainer.FIST_LAUNCH_DELAY
-                    _state.value = SettingContainer(periodic = periodic, delayed = delayed)
+                    val stateValue = SettingContainer(periodic = periodic, delayed = delayed)
+                    _state.update { stateValue }
                 }
         }
     }

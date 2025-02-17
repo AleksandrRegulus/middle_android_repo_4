@@ -45,7 +45,7 @@ class WorkManagerServiceImp(
     }
 
     private fun createRequest(repeat: Long, delayed: Long): PeriodicWorkRequest {
-        val networkConstraints = createConstraints()
+        val constraints = createConstraints()
         return PeriodicWorkRequestBuilder<RefreshWorker>(
             repeatInterval = repeat,
             repeatIntervalTimeUnit = TimeUnit.MINUTES
@@ -53,7 +53,7 @@ class WorkManagerServiceImp(
             duration = delayed,
             timeUnit = TimeUnit.SECONDS
         )
-            .setConstraints(constraints = networkConstraints)
+            .setConstraints(constraints = constraints)
             .build()
     }
 
